@@ -6,7 +6,7 @@ echo: false
 bibliography: references.bib
 ---
 
-## Packages 
+## Packages
 
 ```{r}
 #| warning: false
@@ -14,14 +14,56 @@ bibliography: references.bib
 library(tidyverse)
 library(tidymodels)
 library(scales)
+library(modeldata)
+library(ggbeeswarm)
 ```
 
 ## Question 1
 
+```{r}
+taxi
+```
 
-## Question 2 
+```{r}
+taxi |> 
+  filter(is.na(distance))
+```
 
+```{r}
+#| label: histogram-distance
+ggplot(taxi, aes(x = distance, fill = tip)) +
+  geom_histogram(binwidth = 250)
+```
 
-## Your own question 
+```{r}
+#| label: boxplot-distance
+ggplot(taxi, aes(x = distance, y = tip, fill = tip)) +
+  geom_boxplot(show.legend = FALSE)
+```
 
+```{r}
+#| label: density-distance
+ggplot(taxi, aes(x = distance, fill = tip, color = tip)) +
+  geom_density(alpha = 0.5)
+```
 
+```{r}
+#| label: violin-distance
+ggplot(taxi, aes(x = distance, y = tip, color = tip, fill = tip)) +
+  geom_violin(alpha = 0.2, show.legend = FALSE)
+```
+
+```{r}
+#| label: jitter-distance
+set.seed(1234)
+ggplot(taxi, aes(x = tip, y = distance)) +
+  geom_jitter(alpha = 0.5)
+```
+
+The graphical analysis reveals a clear relationship between trip distance and tipping behavior. While most passengers leave a tip regardless of journey length, the proportion of non-tippers declines markedly as trip distance increases, and long-distance trips consistently exhibit high tipping rates. Consequently, we conclude that longer taxi journeys are associated with a lower likelihood of passengers foregoing a tip.
+
+## ndefinedQuestion 2
+
+```{r}
+
+```
