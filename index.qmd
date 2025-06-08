@@ -30,40 +30,85 @@ taxi |>
 ```
 
 ```{r}
-#| label: histogram-distance
-ggplot(taxi, aes(x = distance, fill = tip)) +
-  geom_histogram(binwidth = 250)
-```
-
-```{r}
 #| label: boxplot-distance
 ggplot(taxi, aes(x = distance, y = tip, fill = tip)) +
-  geom_boxplot(show.legend = FALSE)
+  geom_boxplot(show.legend = FALSE) +
+  theme_minimal() +
+    labs(
+    title = "Boxplot tip vs distance covered",
+    subtitle = "Taxi service in Chicago",
+    y = "Tip",
+    x = "Distance in odoter miles"
+  )
 ```
 
 ```{r}
 #| label: density-distance
 ggplot(taxi, aes(x = distance, fill = tip, color = tip)) +
-  geom_density(alpha = 0.5)
+  geom_density(alpha = 0.5) +
+  theme_minimal() +
+    labs(
+    title = "Density plot tip vs distance covered",
+    subtitle = "Taxi service in Chicago",
+    y = "Density",
+    x = "Distance in odoter miles"
+  )
 ```
 
 ```{r}
 #| label: violin-distance
 ggplot(taxi, aes(x = distance, y = tip, color = tip, fill = tip)) +
-  geom_violin(alpha = 0.2, show.legend = FALSE)
+  geom_violin(alpha = 0.2, show.legend = FALSE) +
+    theme_minimal() +
+    labs(
+    title = "Violin plot tip vs distance covered",
+    subtitle = "Taxi service in Chicago",
+    y = "Tip",
+    x = "Distance in odoter miles"
+  )
 ```
 
 ```{r}
 #| label: jitter-distance
 set.seed(1234)
 ggplot(taxi, aes(x = tip, y = distance)) +
-  geom_jitter(alpha = 0.5)
+  geom_jitter(alpha = 0.5) +
+      theme_minimal() +
+    labs(
+    title = "Jitter plot tip vs distance covered",
+    subtitle = "Taxi service in Chicago",
+    y = "Distance in odoter miles",
+    x = "Tip"
+  )
 ```
 
 The graphical analysis reveals a clear relationship between trip distance and tipping behavior. While most passengers leave a tip regardless of journey length, the proportion of non-tippers declines markedly as trip distance increases, and long-distance trips consistently exhibit high tipping rates. Consequently, we conclude that longer taxi journeys are associated with a lower likelihood of passengers foregoing a tip.
 
-## ndefinedQuestion 2
+## Question 2
 
 ```{r}
+#| label: boxplot-company
+taxi_copy <- taxi |> 
+  mutate(tip_encode = if_else(tip == "yes", 1L, 0L))
 
+Tips_by_Company <- taxi_copy |> 
+  group_by(company) |> 
+    summarize(total_tips = sum(tip_encode, na.rm = TRUE))
+
+Tips_by_Company
 ```
+
+```{r}
+#| label: histogram-tips
+ggplot(Tips_by_Company, aes(x = total_tips, y = company)) +
+  geom_bar(stat = "identity") +
+    theme_minimal() +
+    labs(
+    title = "Total count of tips for each company",
+    subtitle = "Taxi service in Chicago",
+    y = "Company name",
+    x = "Total count of tips"
+  )
+```
+
+There is no evidence to support that passengers tend to tip more for the company Chicago Independents than the others companies.
