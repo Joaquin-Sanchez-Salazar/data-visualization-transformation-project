@@ -2,7 +2,7 @@
 title: "Project"
 author: "Joaquin Sanchez"
 subtitle: "Investigation into Chicago taxis"
-echo: false
+echo: True
 bibliography: references.bib
 ---
 
