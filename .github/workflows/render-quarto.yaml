@@ -1,0 +1,23 @@
+name: Render Quarto
+
+on:
+  push:
+    paths:
+      - "**.qmd"
+      - "_quarto.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: quarto-dev/quarto-actions/setup@v2
+      - name: Render site
+        run: quarto render
+      - name: Commit rendered files
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add .
+          git commit -m "Auto-rendered site"
+          git push
